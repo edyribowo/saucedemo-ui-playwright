@@ -1,16 +1,18 @@
-Done. Review posted successfully to PR #12.
+Review complete and posted to PR #12.
 
 ## Summary
 
-**PR:** [edyribowo/saucedemo-ui-playwright#12](https://github.com/edyribowo/saucedemo-ui-playwright/pull/12) — "docs: clarify README framework note"
+**PR:** [edyribowo/saucedemo-ui-playwright#12](https://github.com/edyribowo/saucedemo-ui-playwright/pull/12) — "docs: clarify README framework note" (3 files, +24/−34)
 
-**Routing:** `ROUTING=SIMPLE` — complexity analyzer reported Files=1, Lines=2 (+1 -1), no core/config files touched → fast/cheap model path.
+**Routing:** `ROUTING=SIMPLE` — analyzer reported Files=3, Lines=58, no core/config files touched → fast/cheap model path.
 
-**Category:** Frontend (this is a Playwright UI test-automation framework; per guidelines UI automation → FE checklist, applied `prompts/mr-review-fe.md`).
+**Category:** Frontend / UI Test Automation (applied `prompts/mr-review-fe.md`) — a Playwright framework is reviewed against the FE checklist per the guidelines, even though it's Java + `pom.xml`.
 
-**Findings:**
-- 🚨 Critical: none — doc-only change, zero regression risk.
-- ⚠️ Warnings: none.
-- 💬 Suggestions: flagged a minor redundancy ("no BDD layer" is largely implied by "no Cucumber/Gherkin") and a consistency note to align phrasing across other docs.
+**Findings posted (issues only, no praise, per prompt):**
+- 🚨 **Critical:** none — the only real change is a one-word README clarification, zero regression risk.
+- ⚠️ **Warnings:**
+  1. **Pipeline artifacts committed into the PR** — `mr-review.log` and `self-healing.log` (54 of 58 changed lines) are machine-generated outputs that bloat the diff and will cause recurring merge conflicts. Ironically, `self-healing.log` itself claims these were "intentionally left out of the commit," yet they're included. Recommended `.gitignore` + `git rm --cached`.
+  2. **PR targets `feature/ai-9`, not `main`** — a standalone doc fix based on another in-flight feature branch risks a confusing merge; suggested retargeting.
+- 💬 **Suggestions:** README wording alternative for clarity, docs-consistency check, and a test-coverage N/A note.
 
-The review was posted as a comment on the remote PR via `gh pr review`, with the routing status prepended as required, and I verified it landed (author `edyribowo`, state `COMMENTED`).
+The review was submitted as a PR comment (state `COMMENTED`, `2026-07-01T14:52:34Z`, author `edyribowo`) with the routing status prepended as required, and I verified it landed.
