@@ -1,0 +1,19 @@
+# Maven
+target/
+build-output.txt
+
+# Playwright
+test-results/
+playwright-report/
+downloads/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
