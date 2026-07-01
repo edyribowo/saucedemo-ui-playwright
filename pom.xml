@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>saucedemo-ui-playwright</name>
-    <description>E2E UI automation for Swag Labs (saucedemo.com) using Playwright + JUnit 5</description>
+    <description>End-to-end UI automation for Swag Labs (saucedemo.com) using Playwright + JUnit 5</description>
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
