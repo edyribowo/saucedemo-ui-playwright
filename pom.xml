@@ -63,7 +63,14 @@
                     <!--
                       Attach the JaCoCo agent before tests run so coverage is
                       recorded into target/jacoco.exec, then render an HTML/XML
-                      report during the verify phase.
+                      report. The report goal is bound to the `test` phase so it
+                      is generated even when the pipeline invokes only `mvn test`
+                      (not just `mvn verify`).
+
+                      Note: this is a Playwright E2E project driving an external
+                      app (saucedemo.com). JaCoCo instruments in-JVM bytecode, so
+                      the reported coverage reflects the test/page-object code
+                      that executes, not the application under test.
                     -->
                     <execution>
                         <id>prepare-agent</id>
@@ -73,7 +80,7 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>verify</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
