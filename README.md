@@ -75,6 +75,21 @@ Defaults live in `src/test/resources/config.properties` and can be overridden at
 runtime with `-D` flags: `base.url`, `browser` (`chromium`/`firefox`/`webkit`),
 `headless`, `timeout`.
 
+### Code coverage (JaCoCo)
+
+`mvn test` records coverage via the JaCoCo agent and generates a report during the
+same `test` phase:
+
+```bash
+mvn test
+open target/site/jacoco/index.html   # HTML report; XML at target/site/jacoco/jacoco.xml
+```
+
+> Scope: JaCoCo instruments **this framework's own code** (page objects, helpers,
+> test support) — not the application under test (saucedemo.com is an external web
+> app). Read the number as "how much of our automation code the suite exercises",
+> not as product coverage.
+
 ## Coverage
 
 31 tests across 5 features — Authentication (9), Inventory (6), Cart (6),
