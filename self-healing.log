@@ -1,30 +1,22 @@
-Pushed successfully (`488b91f..8c93625`). 
+Pushed successfully. Here is the summary.
 
-## Safe Healing Report — PR #11 (`saucedemo-ui-playwright`)
+## 🩹 Safe Healing Report — PR #12
 
-**Model Used: Claude Opus 4.8** (high-capacity), per `ROUTING=COMPLEX` extracted from the MR review comment.
-
-**Branch:** `feature/ai-9` → pushed commit `8c93625`.
+**Model Used: Claude 3 Haiku** — based on `ROUTING=SIMPLE` extracted from the MR review comment (Files=1, Lines=2, docs-only, no core/config touched → fast/cheap model path).
 
 ### Comments addressed
+| # | Category | Comment | Action |
+|---|----------|---------|--------|
+| 1 | 💬 Suggestion (Redundancy) | "no BDD layer" duplicates the qualifier implied by "no Cucumber/Gherkin"; consider "no Cucumber/Gherkin BDD layer" | ✅ Applied |
+| 2 | 💬 Suggestion (Consistency) | Ensure other docs use the same phrasing | ✅ Verified — no change needed (the only other reference in `docs/test-cases.md` is a different context: offering BDD-format test-case generation, not framework description) |
 
-| # | Review point | Resolution |
-|---|---|---|
-| 🚨 Critical | Coverage metric is misleading (E2E vs SUT) | Rewrote the plugin comment to **explicitly justify intent**: JaCoCo is kept as a *"dead automation-code" signal* (unused locators/page-object branches), not product coverage. Also added a README caveat. |
-| ⚠️ Warning | `report` on `test` phase is order-fragile | Investigated: README documents `mvn test` as the run command, so moving to `verify`/`prepare-package` would **never fire**. Kept on `test`, but documented the **surefire-before-jacoco declaration-order requirement** to address the fragility concern without breaking behavior. |
-| ⚠️ Warning | No coverage enforcement | Stated explicitly in-comment that it's **intentionally informational** (no `check` goal/threshold, build never fails on it). |
-| ⚠️ Warning | "E2E → End-to-end" reword is scope noise | **Reverted** the description back to `E2E` to keep the MR scoped to the JaCoCo change. |
-| 💬 Suggestion | Skip coverage when tests skipped | Added `<skip>${skipTests}</skip>` + a `skipTests` property default, so `mvn test -DskipTests` produces no no-op report. |
-| 💬 Suggestion | JaCoCo↔JDK version compatibility | Documented `0.8.12` as the Java 21 floor with a bump-in-lockstep note. |
-| 💬 Suggestion | Clarify metric in docs | Added a **Coverage caveat** in `README.md`. |
-
-### Not applied (best professional judgment)
-- **Move `report` to `verify`/`prepare-package`** — would break report generation under the documented `mvn test` invocation; kept on `test` with the ordering documented instead.
-- **Add a `check` goal / thresholds** — reviewer allowed skipping if stated; documented as intentionally informational.
-- **Wire report publishing in Jenkins** — out of scope for this repo (no Jenkinsfile present here; pipeline lives elsewhere).
+There were **no Critical issues and no Warnings** in the review — only optional suggestions.
 
 ### Files modified
-- `pom.xml` — description revert, `skipTests` default, JaCoCo version rationale, rewritten plugin comments + skip config.
-- `README.md` — coverage caveat.
+- `README.md` (line 7): `no Cucumber/Gherkin, no BDD layer` → `no Cucumber/Gherkin BDD layer`
 
-**Validation:** `mvn validate` passed (only unrelated JVM deprecation warnings).
+### Commit
+- `2f1a979` — `fix: addressed PR review comments`
+- Pushed to `feature/simple-demo-readme` (`05ae9fe..2f1a979`)
+
+**Note:** The transient `mr-review.log` / `self-healing.log` working-tree changes were intentionally left out of the commit — they are pipeline artifacts, not part of this healing change.
