@@ -1,0 +1,30 @@
+Pushed successfully (`488b91f..8c93625`). 
+
+## Safe Healing Report — PR #11 (`saucedemo-ui-playwright`)
+
+**Model Used: Claude Opus 4.8** (high-capacity), per `ROUTING=COMPLEX` extracted from the MR review comment.
+
+**Branch:** `feature/ai-9` → pushed commit `8c93625`.
+
+### Comments addressed
+
+| # | Review point | Resolution |
+|---|---|---|
+| 🚨 Critical | Coverage metric is misleading (E2E vs SUT) | Rewrote the plugin comment to **explicitly justify intent**: JaCoCo is kept as a *"dead automation-code" signal* (unused locators/page-object branches), not product coverage. Also added a README caveat. |
+| ⚠️ Warning | `report` on `test` phase is order-fragile | Investigated: README documents `mvn test` as the run command, so moving to `verify`/`prepare-package` would **never fire**. Kept on `test`, but documented the **surefire-before-jacoco declaration-order requirement** to address the fragility concern without breaking behavior. |
+| ⚠️ Warning | No coverage enforcement | Stated explicitly in-comment that it's **intentionally informational** (no `check` goal/threshold, build never fails on it). |
+| ⚠️ Warning | "E2E → End-to-end" reword is scope noise | **Reverted** the description back to `E2E` to keep the MR scoped to the JaCoCo change. |
+| 💬 Suggestion | Skip coverage when tests skipped | Added `<skip>${skipTests}</skip>` + a `skipTests` property default, so `mvn test -DskipTests` produces no no-op report. |
+| 💬 Suggestion | JaCoCo↔JDK version compatibility | Documented `0.8.12` as the Java 21 floor with a bump-in-lockstep note. |
+| 💬 Suggestion | Clarify metric in docs | Added a **Coverage caveat** in `README.md`. |
+
+### Not applied (best professional judgment)
+- **Move `report` to `verify`/`prepare-package`** — would break report generation under the documented `mvn test` invocation; kept on `test` with the ordering documented instead.
+- **Add a `check` goal / thresholds** — reviewer allowed skipping if stated; documented as intentionally informational.
+- **Wire report publishing in Jenkins** — out of scope for this repo (no Jenkinsfile present here; pipeline lives elsewhere).
+
+### Files modified
+- `pom.xml` — description revert, `skipTests` default, JaCoCo version rationale, rewritten plugin comments + skip config.
+- `README.md` — coverage caveat.
+
+**Validation:** `mvn validate` passed (only unrelated JVM deprecation warnings).
