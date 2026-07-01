@@ -1,0 +1,21 @@
+Review posted to the PR. Summary of what I did:
+
+**Routing:** Ran `mr-complexity-analyzer.sh` → **`ROUTING=COMPLEX`** (reason: core build file `pom.xml` modified; +27/-0, 1 file).
+
+**Project type:** `saucedemo-ui-playwright` is a Playwright UI test-automation framework → reviewed with **Frontend guidelines** per the skill.
+
+**Change reviewed:** Adds `jacoco-maven-plugin` 0.8.12 with `prepare-agent` + `report` (bound to `verify`) executions.
+
+**Key findings I flagged** ([posted comment](https://github.com/edyribowo/saucedemo-ui-playwright/pull/13#issuecomment-4856702743)):
+
+🚨 **Critical**
+- JaCoCo measures coverage of *this repo's own framework code*, not the app under test (external saucedemo.com) — a misleading metric for an E2E UI-automation project.
+
+⚠️ **Warnings**
+- `report` is bound to `verify`, but E2E suites are usually run via `mvn test` — so the report will **silently never generate** unless `mvn verify` is explicitly invoked.
+- `prepare-agent` relies on Surefire's default `argLine` propagation; fragile if someone later adds an explicit `<argLine>` without `@{argLine}` (coverage would silently read 0%).
+- No `check`/threshold rule — coverage can't fail the build and will drift unnoticed.
+
+💬 **Suggestions:** gitignore `jacoco.exec`/report dir, emit XML for CI ingestion, consider a `-Pcoverage` profile, and document `mvn verify` → `target/site/jacoco/index.html` in the README.
+
+The review was posted with `ROUTING=COMPLEX` prepended as required, and no positive/"strengths" sections per the FE prompt's constraints.
