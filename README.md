@@ -4,7 +4,7 @@ End-to-end UI automation for **Swag Labs** (https://www.saucedemo.com/) built wi
 **Java 21 + Playwright + JUnit 5**, following the Page Object Model (POM) with a
 `BasePage` interaction-wrapper abstraction for consistent, low-flakiness waits.
 
-> Framework: **Playwright Standalone** (pure Playwright — no Cucumber/Gherkin, no BDD layer).
+> Framework: **Playwright Standalone** (pure Playwright — no Cucumber/Gherkin BDD layer).
 
 ## Tech stack
 
