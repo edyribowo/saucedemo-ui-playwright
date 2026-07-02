@@ -6,10 +6,19 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   build-and-test:
     name: Build & Test (JUnit 5 + Playwright)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -23,7 +32,27 @@ jobs:
           cache: maven
 
       - name: Install Playwright browsers
-        run: mvn -q -DskipTests test-compile && mvn -q exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
+        # Browser build is driven by the pinned playwright.version in pom.xml, so upgrades
+        # stay in sync. Only chromium is installed since config.properties defaults to
+        # browser=chromium; install additional engines here too if firefox/webkit runs
+        # are ever added to the matrix.
+        run: mvn -q exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
 
       - name: Run tests
-        run: mvn -B verify
+        run: mvn -B test
+
+      - name: Upload Surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/
+          if-no-files-found: ignore
+
+      - name: Publish test summary
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: JUnit Test Results
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
